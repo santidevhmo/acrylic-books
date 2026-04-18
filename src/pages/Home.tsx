@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Bookshelf from "../components/Bookshelf";
+import SearchBar from "../components/SearchBar";
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,6 +41,10 @@ export default function Home() {
           Search for
         </h4>
         <h1 className="text-5xl font-bold">BOOKS</h1>
+      </div>
+
+      <div className="mb-12">
+        <SearchBar onSearch={(q) => console.log(q)} />
       </div>
 
       {/* Bookshelf */}
