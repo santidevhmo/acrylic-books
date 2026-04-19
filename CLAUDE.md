@@ -1,6 +1,8 @@
 # CLAUDE.md
 
 # Project Specific
+- Use the security practice of parametrized queries for when writing code that runs CRUD db operations
+- Use pnpm for all installations and pnpm run dev
 
 # Behavioral Guidelines:
 ## 1. Think Before Coding
