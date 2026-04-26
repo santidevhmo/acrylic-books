@@ -1,13 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import sqlite3 from "sqlite3";
-import { open } from "sqlite";
 import { initTables } from "./initTables.js";
-
-async function openMemoryDB() {
-  const db = await open({ filename: ":memory:", driver: sqlite3.Database });
-  await db.exec("PRAGMA foreign_keys = ON");
-  return db;
-}
+import { openMemoryDB } from "../test/openMemoryDB.js";
 
 describe("initTables", () => {
   let db;

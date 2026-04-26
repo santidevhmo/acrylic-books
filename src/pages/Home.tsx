@@ -1,14 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Bookshelf from "../components/Bookshelf";
 import SearchBar from "../components/SearchBar";
+import { getCurrentUser, logout } from "../lib/authClient";
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadCurrentUser() {
+      try {
+        const response = await getCurrentUser();
+        if (isMounted) {
+          setIsLoggedIn(Boolean(response.user));
+        }
+      } catch {
+        if (isMounted) {
+          setIsLoggedIn(false);
+        }
+      }
+    }
+
+    void loadCurrentUser();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  async function handleLogout() {
+    try {
+      await logout();
+    } finally {
+      setIsLoggedIn(false);
+    }
+  }
+
   return (
     <div className="py-8">
-      {/* Nav */}
       <nav className="flex justify-center items-center py-2 mb-8">
         {isLoggedIn ? (
           <>
@@ -16,10 +47,7 @@ export default function Home() {
               <button className="hover:underline">Read</button>
               <button className="hover:underline">To-Read</button>
             </div>
-            <button
-              className="hover:underline"
-              onClick={() => setIsLoggedIn(false)}
-            >
+            <button className="hover:underline" onClick={handleLogout}>
               Log Out
             </button>
           </>
@@ -35,7 +63,6 @@ export default function Home() {
         )}
       </nav>
 
-      {/* Header */}
       <div className="mb-12">
         <h4 className="text-sm uppercase tracking-wide text-gray-600">
           Search for
@@ -44,10 +71,9 @@ export default function Home() {
       </div>
 
       <div className="mb-12">
-        <SearchBar onSearch={(q) => console.log(q)} />
+        <SearchBar onSearch={(query) => console.log(query)} />
       </div>
 
-      {/* Bookshelf */}
       <div className="flex items-center justify-center">
         <Bookshelf />
       </div>
