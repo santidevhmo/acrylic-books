@@ -89,7 +89,7 @@ export default function Home() {
       </div>
 
       <div className="flex items-center justify-center">
-        <Bookshelf books={books} isLoading={isLoading} />
+        <Bookshelf books={books} isLoading={isLoading} shelfIndex={0} />
       </div>
     </div>
   );
