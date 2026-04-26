@@ -1,11 +1,25 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import type { BookResult } from "../api/searchBooks";
+import { searchBooks } from "../api/searchBooks";
 import Bookshelf from "../components/Bookshelf";
 import SearchBar from "../components/SearchBar";
 import { getCurrentUser, logout } from "../lib/authClient";
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [books, setBooks] = useState<BookResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleSearch(query: string) {
+    setIsLoading(true);
+    try {
+      const results = await searchBooks(query);
+      setBooks(results);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -71,11 +85,11 @@ export default function Home() {
       </div>
 
       <div className="mb-12">
-        <SearchBar onSearch={(query) => console.log(query)} />
+        <SearchBar onSearch={handleSearch} />
       </div>
 
       <div className="flex items-center justify-center">
-        <Bookshelf />
+        <Bookshelf books={books} isLoading={isLoading} />
       </div>
     </div>
   );
