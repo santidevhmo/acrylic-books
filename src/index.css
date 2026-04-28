@@ -1,5 +1,47 @@
 @import "tailwindcss";
 
+@theme inline {
+  --color-gray-alpha-400: var(--ds-gray-alpha-400);
+  --color-background-200: var(--ds-background-200);
+  --shadow-book: var(--ds-shadow-book);
+  --shadow-book-border: var(--ds-shadow-book-border);
+}
+
+:root {
+  --ds-amber-600: oklch(80.25% 0.1953 73.59);
+  --ds-gray-200: hsla(0, 0%, 92%, 1);
+  --ds-gray-1000: hsla(0, 0%, 9%, 1);
+  --ds-gray-alpha-400: hsla(0, 0%, 0%, 0.08);
+  --ds-background-200: hsla(0, 0%, 98%, 1);
+  --ds-book-bind: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0) 12%, rgba(255,255,255,0.25) 29.25%, rgba(255,255,255,0) 50.5%, rgba(255,255,255,0) 75.25%, rgba(255,255,255,0.25) 91%, rgba(255,255,255,0)), linear-gradient(90deg, rgba(0,0,0,0.03), rgba(0,0,0,0.1) 12%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.2) 73.5%, rgba(0,0,0,0.5) 75.25%, rgba(0,0,0,0.15) 85.25%, rgba(0,0,0,0));
+  --ds-shadow-book: 0 1px 1px 0 rgba(0,0,0,.02), 0 4px 8px -4px rgba(0,0,0,.1), 0 16px 24px -8px rgba(0,0,0,.03);
+  --ds-shadow-book-border: inset 0 1px 2px 0 rgba(255,255,255,.3);
+}
+
+.bg-book-gradient {
+  background: linear-gradient(to bottom, #f0f0f0 0%, #ffffff 100%);
+}
+
+.book-rotate {
+  transition: transform 250ms ease;
+}
+.book-rotate:hover {
+  transform: rotateY(-15deg);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.4s ease forwards;
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
 :root {
     --text: #6b6375;
     --text-h: #08060d;
@@ -14,7 +56,7 @@
         rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
     --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-    --heading: system-ui, "Segoe UI", Roboto, sans-serif;
+    --heading: "Playfair Display", serif;
     --mono: ui-monospace, Consolas, monospace;
 
     font: 18px/145% var(--sans);
@@ -60,7 +102,7 @@
     text-align: center;
     min-height: 100svh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 }
 
@@ -76,7 +118,6 @@ h2 {
 }
 
 h1 {
-    font-size: 56px;
     letter-spacing: -1.68px;
     @media (max-width: 1024px) {
         font-size: 36px;
