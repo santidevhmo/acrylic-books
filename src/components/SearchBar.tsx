@@ -1,28 +1,50 @@
+import { useState } from "react";
+import { Spinner } from "./ui/spinner";
+
 interface SearchBarProps {
-  onSearch: (query: string) => void;
+  onQueryChange: (query: string) => void;
+  isLoading?: boolean;
 }
 
-export default function SearchBar({ onSearch }: SearchBarProps) {
+export default function SearchBar({ onQueryChange, isLoading = false }: SearchBarProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [value, setValue] = useState("");
 
-  async function handleSubmit(formData: FormData) {
-    const query = formData.get("query") as string;
-    onSearch(query);
+  const hasContent = value.length > 0;
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setValue(e.target.value);
+    onQueryChange(e.target.value);
   }
 
   return (
-    <form action={handleSubmit} className="flex justify-center gap-2">
+    <div
+      className="relative block mx-auto w-80"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <input
         type="text"
-        name="query"
-        placeholder="Enter book title or author..."
-        className="px-3 py-2 border border-gray-300 rounded"
+        placeholder="Search..."
+        value={value}
+        onChange={handleChange}
+        className="w-full border-b bg-transparent py-1 pr-8 text-black placeholder-gray-300 focus:outline-none"
+        style={{
+          borderColor: hasContent ? 'black' : 'rgb(229 231 235)',
+        }}
       />
-      <button
-        type="submit"
-        className="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700"
-      >
-        Search
-      </button>
-    </form>
+      <Spinner
+        className={`pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-black transition-opacity duration-200 ${
+          isLoading ? "opacity-100" : "opacity-0"
+        }`}
+      />
+      <span
+        className="pointer-events-none absolute bottom-0 left-0 h-px bg-black"
+        style={{
+          width: isHovered || hasContent ? "100%" : "0%",
+          transition: "width 0.5s ease",
+        }}
+      />
+    </div>
   );
 }
